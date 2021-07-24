@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-config
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    command: [ "/bin/sh", "-c", "echo $(DATA_STRING) > $(DATA_PATH); nginx -g 'daemon off;'" ]
+    env:
+      - name: DATA_STRING
+        valueFrom:
+          configMapKeyRef:
+            name: web-config
+            key: STRING
+            optional: true
+      - name: DATA_PATH
+        valueFrom:
+          configMapKeyRef:
+            name: web-config
+            key: STRING
+            optional: true
+      - name: DATA_PATH
+        valueFrom:
+          configMapKeyRef:
+            name: web-config
+            key: PATH
+            optional: true
+  restartPolicy: Never

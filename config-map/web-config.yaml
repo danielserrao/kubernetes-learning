@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-config
+  namespace: default
+data:
+  STRING: Welcome to MY-NGINX!
+  PATH: /usr/share/nginx/html/index.html

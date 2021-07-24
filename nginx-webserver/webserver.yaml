@@ -15,7 +15,12 @@ spec:
         app: nginx
     spec:
       containers:
-      - name: nginx
-        image: nginx:alpine
-        ports:
-        - containerPort: 80
+        - name: nginx
+          image: nginx:alpine
+          ports:
+          - containerPort: 80
+          # For some reason it takes a while for the nginx pods to be found when using configmaps.
+          # You should try for some minutes and use the anonymous windows.
+          envFrom: 
+          - configMapRef:
+              name: customer1
