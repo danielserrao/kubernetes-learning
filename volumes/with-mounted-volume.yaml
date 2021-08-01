@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: with-mounted-volume
+spec:
+  # volumes: # Volumes are defined at the pod level
+  # - name: my-volume # We'll use this name to mount the volume inside the pod
+  #   hostPath: # Here we define the type of volume we want
+  #     path: /var/my-k8s-volume
+  volumes:
+  - name: mypd # To refer to this volume when we configure the pod
+    persistentVolumeClaim: # Instead of hostPath
+      claimName: mypvc # The name of the pvc we just created
+  containers:
+  - args:
+    - /bin/sh
+    - -c
+    - "sleep 3600"
+    image: busybox
+    name: bb
+    volumeMounts:
+    - name: mypd
+      mountPath: /tmp/foo
+  restartPolicy: Never

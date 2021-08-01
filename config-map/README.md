@@ -18,12 +18,12 @@ This is another example of using config maps.
 `kubectl exec app-config -- /bin/sh -c 'cat /usr/share/nginx/html/index.html'`
 
 
-# The use of the Kubernetes command field
+# The use of the Kubernetes CMD field
 
-The command field corresponds to entrypoint in some container runtimes.
+The CMD field corresponds to entrypoint in some container runtimes.
 
-In the case of Docker, the Kubernetes command field will override the entrypoint of the image.
+In the case of Docker, the Kubernetes CMD field will override the entrypoint of the image.
 
-The entrypoint command is executed by the main process which should always be running otherwise the Pod will be considered Completed and won't run any container.
+The entrypoint CMD is executed by the main process which should always be running otherwise the Pod will be considered Completed and won't run any container.
 
 One way of fixing this when using nginx, is to run the command `nginx -g 'daemon off;'` at the end which will make the main process to keep running nginx and keep the container running.
