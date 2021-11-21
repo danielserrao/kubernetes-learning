@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: virtual-host-ingress
   namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
   - host: blue.example.com
