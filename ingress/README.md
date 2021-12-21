@@ -1,3 +1,5 @@
+## Steps to start
+
 To enable the NGINX Ingress controller, run the following command:
 
 `minikube addons enable ingress`
@@ -29,3 +31,8 @@ Then you need to to make your Windows host IP 127.0.0.1 point to blue.example.co
 Finally, access these addresses on you Windows host browser to make sure that is working.
 
 `minikube tunnel` may lack output with information about the IPs and ports to use for each ingress/service, but this is a bug that can be seen at https://github.com/kubernetes/minikube/issues/12899.
+
+
+## Limitations
+
+These configurations are only supporte on Kubernetes 1.19 or higher. See https://docs.konghq.com/kubernetes-ingress-controller/1.3.x/concepts/ingress-versions for more information.

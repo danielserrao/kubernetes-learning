@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: check-mk
+  namespace: check-mk
+  labels:
+    app: check-mk
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: check-mk
+  template:
+    metadata:
+      labels:
+        app: check-mk
+    spec:
+      volumes:
+      - name: check-mk-server-data
+        persistentVolumeClaim:
+          claimName: mypvc # TODO: Should be changed rook-ceph-fs for dev and prod
+      - name: tmpfs
+        emptyDir:
+          medium: Memory
+          sizeLimit: 64Mi # TODO: Confirm necessary resources
+      containers:
+        - name: check-mk
+          image: checkmk/check-mk-raw:2.0.0-latest
+          ports:
+          - containerPort: 5000
+          volumeMounts:
+          - name: check-mk-server-data
+            mountPath: /omd/sites
+          - name: tmpfs
+            mountPath: /opt/omd/sites/cmk/tmp
+          command: ['sh', '-c', "chown -R 1000:1000 /opt/omd/sites/cmk/tmp"]
+            #subPath: tmp

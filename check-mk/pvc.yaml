@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mypvc
+  namespace: check-mk
+spec:
+  storageClassName: normal
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+
+
+# Example on FreeIPA
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: freeipa-data-pvc
+#   namespace: freeipa
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   storageClassName: rook-ceph-block
+#   resources:
+#     requests:
+#       storage: {{ .Values.volumestorage }}
