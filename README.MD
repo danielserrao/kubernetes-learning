@@ -11,9 +11,9 @@ These K8s examples were tested with:
 
 - Ubuntu 20.04
 - minikube v1.29.0 (tool that creates the local k8s clusters)
-- kubectl (tool that allows you to communicate with the cluster API and deploy resources into the cluster)
+- kubectl v1.26.1 (tool that allows you to communicate with the cluster API and deploy resources into the cluster)
 
-Most or all the examples will probably work even with different version, but is not guaranteed. You may need to do slight changes on the K8s yaml manifests.
+Most or all the examples will probably work even with different versions, but its not guaranteed. You may need to do slight changes on the K8s yaml manifests.
 
 
 # Setting up your local cluster with minikube
