@@ -1,26 +1,49 @@
 # Introduction
 
-This is another example of using config maps.
+On this example we show that we can use ConfigMaps to pass values into pods environment variables and use these to update the content of files.
 
+To know more about ConfigMaps check the official documentation at https://kubernetes.io/docs/concepts/configuration/configmap/.
 
-# Create the configMap
+# Check the current list of configmaps
 
-`kubectl apply -f web-config.yaml`
+- `k get cm`
 
+# Create the configMap and confirm that it was created
+
+- `k apply -f configmap.yaml`
+- `k get cm`
 
 # Create the pod running the nginx app
 
-`kubectl apply -f app-config.yaml`
+- `k apply -f pod.yaml`
+- `k get pods`
 
 
-# Check if the index.html was updated accordingly to configMap data key string
+# Check the current index.html accordingly to configMap data key string
 
-`kubectl exec app-config -- /bin/sh -c 'cat /usr/share/nginx/html/index.html'`
+- `k exec pod -- /bin/sh -c 'cat /usr/share/nginx/html/index.html'`
+- You should see the message `Welcome to MY-NGINX!`.
+
+
+# Update the config map
+
+- Change the file `configmap.yaml` message to `Welcome to MY-NGINX! Version 2` and save the file.
+- `k apply -f configmap.yaml`
+- `k delete -f pod.yaml` (You need to redeploy the pod to make it fetch the latest config map version)
+- `k apply -f pod.yaml`
+- `k exec pod -- /bin/sh -c 'cat /usr/share/nginx/html/index.html'`
+- You should see the message `Welcome to MY-NGINX! Version 2` which confirms that you successfully update the environment variable inside the pod!
+
+
+# Delete resources
+
+- `k delete -f pod.yaml`
+- `k delete -f configmap.yaml`
 
 
 # The use of the Kubernetes CMD field
 
-The CMD field corresponds to entrypoint in some container runtimes.
+The `command` field in the `pod.yaml` file corresponds to entrypoint in some container runtimes such as docker.
 
 In the case of Docker, the Kubernetes CMD field will override the entrypoint of the image.
 

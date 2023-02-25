@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: app-config
+  name: pod
 spec:
   containers:
   - name: nginx
@@ -11,19 +11,13 @@ spec:
       - name: DATA_STRING
         valueFrom:
           configMapKeyRef:
-            name: web-config
+            name: configmap
             key: STRING
             optional: true
       - name: DATA_PATH
         valueFrom:
           configMapKeyRef:
-            name: web-config
-            key: STRING
-            optional: true
-      - name: DATA_PATH
-        valueFrom:
-          configMapKeyRef:
-            name: web-config
+            name: configmap
             key: PATH
             optional: true
   restartPolicy: Never

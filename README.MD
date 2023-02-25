@@ -63,9 +63,16 @@ NOTE: When using arkade you might find situations when the tool cannot download 
 - Create one folder for each K8s service type showing how to deploy them.
 - Create README.MD to explain how to deploy K8s infrastructure using maybe https://k3s.io/.
 
+* Create one example for each:
+    - Teleport
+    - Cert-Manager
+    - Goldilocks
+    - Grafana and Prometheus
+    - FluentD and Loki-distributed
+
 
 # References and other useful content
 
-- https://kubernetes.io/docs/tutorials/hello-minikube/ (Try kubernetes online wthout installing anything on your machine)
+- https://kubernetes.io/docs/tutorials/hello-minikube/ (Try kubernetes online without installing anything on your machine)
 - https://kubernetes.io/docs/reference/kubectl/cheatsheet/ (List of the most basic and useful K8s commands)
 - https://github.com/alexellis/arkade#catalog-of-clis (List of more useful CLIs that you may want to try)
