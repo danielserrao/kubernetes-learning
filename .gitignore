@@ -1,3 +1,7 @@
 **/*.crt
 **/*.csr
 **/*.key
+
+# Test files
+original-*
+test-*

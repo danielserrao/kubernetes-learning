@@ -1,0 +1,160 @@
+# Check default helm values at https://github.com/fluent/helm-charts/blob/main/charts/fluentd/values.yaml
+
+podSecurityPolicy:
+  enabled: false # podSecurityPolicy not supported from Kubernetes 1.25 (https://github.com/fluent/helm-charts/issues/285)
+  annotations: {}
+
+## Fluentd list of plugins to install
+##
+plugins: #[]
+  - fluent-plugin-grafana-loki
+
+## Fluentd configurations:
+##
+fileConfigs:
+  01_sources.conf: |-
+    ## logs from podman
+    <source>
+      @type tail
+      @id in_tail_container_logs
+      @label @KUBERNETES
+      path /var/log/containers/*.log
+      pos_file /var/log/fluentd-containers.log.pos
+      tag kubernetes.*
+      read_from_head true
+      <parse>
+        @type multi_format
+        <pattern>
+          format json
+          time_key time
+          time_type string
+          time_format "%Y-%m-%dT%H:%M:%S.%NZ"
+          keep_time_key false
+        </pattern>
+        <pattern>
+          format regexp
+          expression /^(?<time>.+) (?<stream>stdout|stderr)( (.))? (?<log>.*)$/
+          time_format '%Y-%m-%dT%H:%M:%S.%NZ'
+          keep_time_key false
+        </pattern>
+      </parse>
+      emit_unmatched_lines true
+    </source>
+
+    <source>
+      @type systemd
+      tag systemd_host
+      path /var/log/journal
+      matches [{ "_SYSTEMD_UNIT": "kubelet.service" }]
+
+      <storage>
+        @type local
+        path /var/log/fluentd-journald-kubelet-cursor.json
+      </storage>
+
+      <entry>
+        fields_strip_underscores true
+        fields_lowercase true
+      </entry>
+    </source>
+
+    <source>
+      @type tail
+      path /var/log/kubernetes/audit/*.log
+      pos_file /var/log/td-agent/tmp/fluentbit_kube_audit.pos
+      tag apiserver_audit
+      <parse>
+        @type json
+      </parse>
+      max_line_size 32K
+    </source>
+
+  02_filters.conf: |-
+    <label @KUBERNETES>
+      <match kubernetes.var.log.containers.fluentd**>
+        @type relabel
+        @label @FLUENT_LOG
+      </match>
+
+      # <match kubernetes.var.log.containers.**_kube-system_**>
+      #   @type null
+      #   @id ignore_kube_system_logs
+      # </match>
+
+      <filter kubernetes.**>
+        @type kubernetes_metadata
+        @id filter_kube_metadata
+        skip_labels false
+        skip_container_metadata false
+        skip_namespace_metadata true
+        skip_master_url true
+      </filter>
+
+      <match **>
+        @type relabel
+        @label @DISPATCH
+      </match>
+    </label>
+
+  03_dispatch.conf: |-
+    <label @DISPATCH>
+      <filter **>
+        @type prometheus
+        <metric>
+          name fluentd_input_status_num_records_total
+          type counter
+          desc The total number of incoming records
+          <labels>
+            tag ${tag}
+            hostname ${hostname}
+          </labels>
+        </metric>
+      </filter>
+
+      <match **>
+        @type relabel
+        @label @OUTPUT
+      </match>
+    </label>
+
+  04_outputs.conf: |-
+    <label @OUTPUT>
+      <match kubernetes.**>
+        @type loki
+        url "http://loki-distributed-distributor.default.svc.cluster.local:3100"
+        extra_labels {"env":"dev","job":"fluentd_k8s"}
+        flush_interval 10s
+        flush_at_shutdown true
+        buffer_chunk_limit 1m
+        <label>
+          kubernetes_app $.kubernetes.app
+        </label>
+        <label>
+          kubernetes_pod_name $.kubernetes.pod_name
+        </label>
+        <label>
+          kubernetes_namespace_name $.kubernetes.namespace_name
+        </label>
+        <label>
+          kubernetes_container_name $.kubernetes.container_name
+        </label>
+      </match>
+    </label>
+
+    <match systemd_host>
+      @type loki
+      url "http://loki-distributed-distributor.default.svc.cluster.local:3100"
+      extra_labels {"env":"dev","job":"fluentd_host"}
+      flush_interval 10s
+      flush_at_shutdown true
+      buffer_chunk_limit 1m
+    </match>
+
+    <match apiserver_audit>
+      @type loki
+      url "http://loki-distributed-distributor.default.svc.cluster.local:3100"
+      extra_labels {"env":"dev","job":"fluentd_k8saudit"}
+      flush_interval 10s
+      flush_at_shutdown true
+      buffer_chunk_limit 1m
+    </match>

@@ -59,19 +59,18 @@ NOTE: When using arkade you might find situations when the tool cannot download 
 
 - In each README.MD file inside every folder show the link for the official doc of the resources that are being deployed.
 - Setting up your local cluster with K3D and Tilt and update all `README.MDs` to show how to use them.
+- Add exercise to learn kustomize in the context of multiple environments. (e.g.: Create Grafana base kustomize files from Official chart and then create patches in different folder fro easier maintenante and upgrades when pulling newer versions from official chart)
 - Tips to troubleshoot issues inside K8s clusters.
 - Create example for K8s RBAC.
 - Update the liveness-probe folder to be named probes and contain one yaml file for each type of probe.
 - Create one folder for each K8s service type showing how to deploy them.
 - Create README.MD to explain how to deploy K8s infrastructure using maybe https://k3s.io/.
 
+
 * Create one example for each:
     - Teleport
     - Cert-Manager
     - Goldilocks
-    - Grafana and Prometheus
-    - FluentD and Loki-distributed
-
 
 # References and other useful content
 
