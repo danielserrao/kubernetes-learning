@@ -74,7 +74,7 @@ Steps to deploy FluentD using the official helm chart:
 
 (Terminal 1)
 - helm repo add fluent https://fluent.github.io/helm-charts
-- helm upgrade --install fluentd fluent/fluentd --values fluentd-helm-values.yaml --version v1.14.6
+- helm upgrade --install fluentd fluent/fluentd --values fluentd-helm-values.yaml --version 0.3.9
 
 (Terminal 2)
 - export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=fluentd,app.kubernetes.io/instance=fluentd" -o jsonpath="{.items[0].metadata.name}")
