@@ -15,6 +15,16 @@ Know more about cert-manager at https://cert-manager.io/docs/.
 - `helm repo update`
 - `minikube addons enable ingress`
 
+```
+helm install \
+  cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --version v1.11.0 \
+  --set installCRDs=true
+```
+
+
 
 ## TODO
 
