@@ -71,6 +71,11 @@ NOTE: When using arkade you might find situations when the tool cannot download 
     - Teleport
     - Cert-Manager
     - Goldilocks
+    - Cilium (Service Mesh)
+    - eBPF
+    - NATs
+    - SHAR
+    - Jaeger
 
 # References and other useful content
 

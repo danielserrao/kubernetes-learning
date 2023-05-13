@@ -7,7 +7,7 @@ It can issue certificates from a variety of supported sources, including Let's E
 Know more about cert-manager at https://cert-manager.io/docs/.
 
 
-## Steps to create certificate and use with to implement TLS on ingress
+## Steps to create certificate and use it to implement TLS on ingress
 
 First lets prepare our cluster with the following steps:
 
