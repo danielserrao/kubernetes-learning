@@ -1,0 +1,54 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "ClusterStateStorage",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:BatchWriteItem",
+                "dynamodb:UpdateTimeToLive",
+                "dynamodb:PutItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:DescribeStream",
+                "dynamodb:UpdateItem",
+                "dynamodb:DescribeTimeToLive",
+                "dynamodb:CreateTable",
+                "dynamodb:DescribeTable",
+                "dynamodb:GetShardIterator",
+                "dynamodb:GetItem",
+                "dynamodb:UpdateTable",
+                "dynamodb:GetRecords",
+                "dynamodb:UpdateContinuousBackups"
+            ],
+            "Resource": [
+                "arn:aws:dynamodb:eu-west-2:832044644018:table/teleport-helm-backend",
+                "arn:aws:dynamodb:eu-west-2:832044644018:table/teleport-helm-backend/stream/*"
+            ]
+        },
+        {
+            "Sid": "ClusterEventsStorage",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:CreateTable",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:UpdateTimeToLive",
+                "dynamodb:PutItem",
+                "dynamodb:DescribeTable",
+                "dynamodb:DeleteItem",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:UpdateItem",
+                "dynamodb:DescribeTimeToLive",
+                "dynamodb:UpdateTable",
+                "dynamodb:UpdateContinuousBackups"
+            ],
+            "Resource": [
+                "arn:aws:dynamodb:eu-west-2:832044644018:table/teleport-helm-events",
+                "arn:aws:dynamodb:eu-west-2:832044644018:table/teleport-helm-events/index/*"
+            ]
+        }
+    ]
+}

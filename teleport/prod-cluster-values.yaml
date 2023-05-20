@@ -1,0 +1,6 @@
+roles: kube
+authToken: 18de2a83935c8feee4c000ee8eff63de
+proxyAddr: teleport.danielserrao.life:443
+kubeClusterName: eks-test1.eu-west-2.eksctl.io
+labels:
+    teleport.internal/resource-id: 9c942701-3146-42cb-9770-93276adc657a

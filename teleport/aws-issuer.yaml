@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-production
+  namespace: teleport
+spec:
+  acme:
+    email: danielserrao1989@hotmail.com                    # Change this
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-production
+    solvers:
+    - selector:
+        dnsZones:
+          - "danielserrao.life"                            # Change this
+      dns01:
+        route53:
+          region: eu-west-2                                # Change this
+          hostedZoneID: Z10178624UNKYF8SFVEM               # Change this
